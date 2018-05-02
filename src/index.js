@@ -74,10 +74,10 @@ function returnCounter(number = 0) {
    returnArgumentsArray(1, 2, 3) вернет [1, 2, 3]
  */
 function returnArgumentsArray(...args) {
-    
+  
     return args;
 }
-
+returnArgumentsArray(1, 2, 3)
 /*
  Задание 6 *:
 
