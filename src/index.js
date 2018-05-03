@@ -41,12 +41,12 @@ function reduce(array, fn, initial) {
   for(var i = 0; i < array.length; i++){
 
     if(initial){
-      var current  = i
+      var cur = i;
     } else {
-      var current  = i + 1
+      var cur = i + 1;
     }
 
-    result = fn(result, array[current], current, array);    
+    result = fn(result, array[cur], cur, array);    
   }  
 
   return result;
@@ -76,17 +76,35 @@ function upperProps(obj) {
  Посмотрите как работает slice и повторите это поведение для массива, который будет передан в параметре array
  */
 function slice(array, from, to) {
-//   var arr = [];
+  var arr = [];
+  var from = from < 0 ? 0 : from
 
-//   for(var i = 0; i < array.length; i++){
-//     if(i ){
+  for(var i = from; i < array.length; i++){
+    if(to >= 0){
+      if(to == 0){
+        return arr
+      } 
+      if(to > i){
+        arr.push(array[i])
+      }
+      
+    } else {
+      if((array.length + to) > i){
+        arr.push(array[i])
+      }
+    }
 
-//     }
-//   }
+    if(!to){
+      arr.push(array[i])
+    }
+    
+  }
+  return arr;
 }
 
 // var array = [1, 2, 3, 4, 5, 6, 7];
-// console.log(slice(array));
+// console.log(slice(array, -999, 4));
+// console.log(array.slice(-99999, 4));
 
 /*
  Задание 6 *:
