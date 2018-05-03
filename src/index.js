@@ -77,6 +77,9 @@ function upperProps(obj) {
 function slice(array, from, to) {
   var arr = [];
   var from = from < 0 ? 0 : from
+  if(arguments.length <= 1) {
+    return array
+  }
 
   for(var i = from; i < array.length; i++){
     if(to >= 0){
@@ -95,15 +98,10 @@ function slice(array, from, to) {
 
     if(!to){
       arr.push(array[i])
-    }
-    
+    }    
   }
   return arr;
 }
-
-// var array = [1, 2, 3, 4, 5, 6, 7];
-// console.log(slice(array, -999, 4));
-// console.log(array.slice(-99999, 4));
 
 /*
  Задание 6 *:
@@ -112,26 +110,37 @@ function slice(array, from, to) {
  Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
  */
 function createProxy(obj) { 
+  console.log("!!")
+  for(var key in obj){
+    console.log("@@@")
+    console.log(key)
+  }
 
-//   var objectWithIterator = {};
+  var objectWithIterator = {};
 
-//   objectWithIterator[Symbol.iterator] = function (){
-//     var i = 0;
-    
-//     return {
-//       next() {
-//         return {
-//           value: i,
-//           done: i++ === 10
-//         }
-//       }
-//     }
-//   }
+  // objectWithIterator[Symbol.iterator] = () => {
+  //   console.log(obj)
+  //   console.log("))))")
+        
+  //   return {
+  //     next() {
+  //       return {
+  //         value: '',
+  //         done: ''
+  //       }
+  //     }
+  //   }
+  // }
+  return objectWithIterator;
 }
-// for (var obj of objectWithIterator) {
-//   console.log(obj);
+let obj = {};
 
-// }
+obj = createProxy(obj);
+console.log(obj)
+
+obj.a = 2;
+obj.b = 5;
+console.log(obj)
 
 
 export {
