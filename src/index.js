@@ -38,15 +38,16 @@ function reduce(array, fn, initial) {
 
   var result = initial || array[0];
 
+  if (!initial) {
+    var cur = 1;
+  }
+
   for(var i = 0; i < array.length; i++){
 
-    if(initial){
-      var cur = i;
-    } else {
-      var cur = i + 1;
-    }
+    
 
     result = fn(result, array[cur], cur, array);    
+    cur++;
   }  
 
   return result;
@@ -112,8 +113,28 @@ function slice(array, from, to) {
  Функция принимает объект и должна вернуть Proxy для этого объекта
  Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
  */
-function createProxy(obj) {
+function createProxy(obj) { 
+
+//   var objectWithIterator = {};
+
+//   objectWithIterator[Symbol.iterator] = function (){
+//     var i = 0;
+    
+//     return {
+//       next() {
+//         return {
+//           value: i,
+//           done: i++ === 10
+//         }
+//       }
+//     }
+//   }
 }
+// for (var obj of objectWithIterator) {
+//   console.log(obj);
+
+// }
+
 
 export {
     forEach,
