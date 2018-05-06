@@ -57,11 +57,9 @@ function reduce(array, fn, initial) {
 function upperProps(obj) {
     var arr = [];
 
-    for (var name in obj) {
-        if (obj.hasOwnProperty(name)) {
-            arr.push(name.toUpperCase());
-        }         
-    }
+    for (var name of Object.keys(obj)) {      
+        arr.push(name.toUpperCase());      
+    } 
 
     return arr;
 }
@@ -72,7 +70,7 @@ function upperProps(obj) {
  Напишите аналог встроенного метода slice для работы с массивами
  Посмотрите как работает slice и повторите это поведение для массива, который будет передан в параметре array
  */
-function slice(array, from, to = array.length) {
+function slice(array, from = 0, to = array.length) {
     var arr = [];
     
     if (arguments.length <= 1) {
@@ -87,7 +85,11 @@ function slice(array, from, to = array.length) {
         to = array.length + to
     }
 
-    for (var i = from < 0 ? 0 : from; to > i; i++) {
+    if (from < 0) {
+        from = 0;
+    }
+
+    for (var i = from; to > i; i++) {
         arr.push(array[i])
     }
 
