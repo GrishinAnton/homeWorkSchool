@@ -94,7 +94,22 @@ function isSomeTrue(array, fn) {
  3.3: Необходимо выбрасывать исключение в случаях:
    - fn не является функцией (с текстом "fn is not a function")
  */
-function returnBadArguments(fn) {
+function returnBadArguments(fn, ...args) {
+    var arr = [];
+
+    if (typeof (fn) !== 'function') {
+        throw new Error ('fn is not a function')
+    }
+
+    for (var i = 0; i < args.length; i++) {
+        try {
+            fn(args[i])
+        } catch (e) {
+            arr.push(args[i])
+        }
+    }
+
+    return arr;
 }
 
 /*
