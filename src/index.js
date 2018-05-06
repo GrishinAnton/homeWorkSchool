@@ -19,34 +19,28 @@
 
 function isAllTrue(array, fn) { 
     
-    var flag = true;
-    
-    try {   
-
-        if (!Array.isArray(array)) {
-            throw new Error('empty array')
-        } else if (typeof (fn) !== 'function') { 
-            throw new Error('fn is not a function')
-        } else if (!array.length) {
-            throw new Error('empty array')
-        }
-
-        for (var i = 0; i < array.length; i++) {
-            if (!fn(array[i])) {
-                flag = false;
-            } 
-            
-        }   
-        
-        return flag;
-
-    } catch (e) {
-        console.log(e.message);
+    if (!Array.isArray(array)) {
+        throw new Error('empty array')
     }
-}
 
-console.log(isAllTrue([], n => n < 10)) // вернет true
-// console.log(isAllTrue([100, 2, 3, 4, 5], n => n < 10)) // вернет false)
+    if (typeof (fn) !== 'function') { 
+        throw new Error('fn is not a function')
+    } 
+
+    if (!array.length) {
+        throw new Error('empty array')
+    }
+
+    for (var i = 0; i < array.length; i++) {
+
+        if (!fn(array[i])) {            
+            return false;
+        } 
+        
+    }   
+    
+    return true;
+}
 
 /*
  Задание 2:
@@ -66,19 +60,27 @@ console.log(isAllTrue([], n => n < 10)) // вернет true
  */
 function isSomeTrue(array, fn) {
 
-    if (!Array.isArray(array) || !array.length > 0) {
+    if (!Array.isArray(array)) {
         throw new Error('empty array')
     }
 
-    if (typeof (fn) !== 'function') {
+    if (typeof (fn) !== 'function') { 
         throw new Error('fn is not a function')
+    } 
+
+    if (!array.length) {
+        throw new Error('empty array')
     }
 
-    try {
-        return array.some(fn);
-    } catch (e) {
-        e.message
-    }    
+    for (var i = 0; i < array.length; i++) {
+
+        if (fn(array[i])) {            
+            return true;
+        } 
+        
+    }   
+    
+    return false; 
 }
 
 /*
