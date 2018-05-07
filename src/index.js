@@ -129,7 +129,30 @@ function returnBadArguments(fn, ...args) {
    - number не является числом (с текстом "number is not a number")
    - какой-либо из аргументов div является нулем (с текстом "division by 0")
  */
-function calculator() {
+function calculator(initial = 0) {
+
+    if (typeof initial !== 'number') {
+        throw new Error('number is not a number')
+    }
+
+    return {
+        sum: (...args) => args.reduce((prev, current) => prev + current, initial),
+        dif: (...args) => args.reduce((prev, current) => prev - current, initial),
+        div: (...args) => {
+
+            function isPositive (number) {
+                return number > 0;
+            }
+
+            if (!args.every(isPositive)) {
+                throw new Error('division by 0');                
+            } 
+
+            return args.reduce((prev, current) => prev / current, initial);
+        },
+        mul: (...args) => args.reduce((prev, current) => prev * current, initial)
+    }    
+
 }
 
 /* При решении задач, пострайтесь использовать отладчик */
