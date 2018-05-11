@@ -121,26 +121,19 @@ function deleteTextNodes(where) {
    После выполнения функции, дерево <span> <div> <b>привет</b> </div> <p>loftchool</p> !!!</span>
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
-function deleteTextNodesRecursive(where) {
-    console.log(where, 'start')    
-
+function deleteTextNodesRecursive (where) {
     for (var i = 0; i < where.childNodes.length; i++) { 
-        console.log(where.childNodes[i], 'for')
-        // if (where.childNodes[i].length) {            
-        //     console.log(where.childNodes[i], 'if')
-        //     collectDOMStat(where.childNodes[i])
-        // } else {
-        //     continue
-        // }
+        if (where.childNodes[i].nodeType == 3) {
+            where.childNodes[i].remove()
+        }
+        
+        if (where.childNodes.length && where.childNodes[i] !== undefined) {            
+            deleteTextNodesRecursive (where.childNodes[i])
+        }
 
-        
-        
+        continue
     }
-
-    console.log(where)
 }
-
-console.log(deleteTextNodesRecursive(document.body))
 
 /*
  Задание 7 *:
@@ -162,24 +155,41 @@ console.log(deleteTextNodesRecursive(document.body))
      texts: 3
    }
  */
-function collectDOMStat(root) {
-    // console.log(root, 'start')
-    // var obj = {}
+function collectDOMStat(root, obj, count) {
 
-    // for (var i = 0; i < root.childNodes.length; i++) { 
+    if (obj == undefined) {
+        var count = 0;
+        var obj = {
+            tags: {},
+            clasess: {},
+            texts: 0
 
-    //     if (root.childNodes[i].length) {
-    //         console.log(root.childNodes[i])
-    //         continue
-    //     }
-
-    //     collectDOMStat(root.childNodes[i])
+        }
+    }    
+    
         
-    // }
-    // console.log(obj)
+    if (root.tagName == 'DIV' || root.tagName == 'B') {
+        obj.tags[root.tagName]= ++count
+    }
+
+    if (root.nodeType == 3) {
+        obj.texts= count += 1
+    }
+
+
+    for (var i = 0; i < root.childNodes.length; i++) { 
+        
+        if (root.childNodes.length && root.childNodes[i] !== undefined) {            
+            collectDOMStat(root.childNodes[i], obj, count)
+        }     
+        
+        continue
+    }
+
+    return obj;
 }
 
-// console.log(collectDOMStat(document.body))
+console.log(collectDOMStat(document.body))
 
 /*
  Задание 8 *:
