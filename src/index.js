@@ -155,41 +155,69 @@ function deleteTextNodesRecursive (where) {
      texts: 3
    }
  */
-function collectDOMStat(root, obj, count) {
+function collectDOMStat(root, obj = { tags: {}, classes: {}, texts: 0 }) {
+   
+    if (root.tagName) {
+        obj.tags[root.tagName] === undefined ? obj.tags[root.tagName] = 1 : obj.tags[root.tagName]++
+    } 
 
-    if (obj == undefined) {
-        var count = 0;
-        var obj = {
-            tags: {},
-            clasess: {},
-            texts: 0
+    if (root.classList) {
+
+        for (let i = 0; i < root.classList.length; i++) {
+            let count = 1;
+
+            if (!obj.classes[root.classList[i]]) {
+                obj.classes[root.classList[i]]= 0;
+            }  
+            obj.classes[root.classList[i]]= obj.classes[root.classList[i]] + count
 
         }
-    }    
-    
         
-    if (root.tagName == 'DIV' || root.tagName == 'B') {
-        obj.tags[root.tagName]= ++count
     }
 
-    if (root.nodeType == 3) {
-        obj.texts= count += 1
+    if (root.nodeType === 3) {
+        let count = 1;
+
+        obj.texts= count + obj.texts;
     }
 
-
-    for (var i = 0; i < root.childNodes.length; i++) { 
+    for (let i = 0; i < root.childNodes.length; i++) {
         
         if (root.childNodes.length && root.childNodes[i] !== undefined) {            
-            collectDOMStat(root.childNodes[i], obj, count)
-        }     
-        
-        continue
+            collectDOMStat(root.childNodes[i], obj)
+        }
     }
 
     return obj;
 }
 
 console.log(collectDOMStat(document.body))
+
+// function collectDOMStat(root, statistic = { tags: {}, classes: {} }) {
+//     [...root.childNodes].forEach(elem => {       
+//         if (elem.data) {
+//             (statistic.texts !== undefined) 
+//                 ? ++statistic.texts
+//                 : statistic.texts = 1
+//         } else {
+//             (statistic.tags[elem.nodeName] !== undefined)
+//                 ? ++statistic.tags[elem.nodeName]
+//                 : statistic.tags[elem.nodeName] = 1
+      
+//             elem.classList.forEach(item => {
+//                 (statistic.classes[item] !== undefined)
+//                     ? ++statistic.classes[item]
+//                     : statistic.classes[item] = 1
+//             })
+//         }
+  
+//         if (elem.children) {
+//             collectDOMStat(elem, statistic)
+//         }
+//     })
+
+//     return statistic
+// }
 
 /*
  Задание 8 *:
