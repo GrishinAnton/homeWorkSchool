@@ -172,6 +172,7 @@ describe('ДЗ 4 - Работа с DOM', () => {
                 nodes: [elementToInsert1, elementToInsert2, elementToInsert3]
             };
             let fragment = new DocumentFragment();
+            // console.log(targetInfo.nodes.length)
 
             document.body.appendChild(where);
 
@@ -180,7 +181,7 @@ describe('ДЗ 4 - Работа с DOM', () => {
             fragment.appendChild(elementToInsert3);
 
             observeChildNodes(where, fn);
-            where.appendChild(fragment);
+            where.appendChild(fragment);            
 
             document.body.removeChild(where);
         });

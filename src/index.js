@@ -155,36 +155,35 @@ function deleteTextNodesRecursive (where) {
      texts: 3
    }
  */
-function collectDOMStat(root, obj = { tags: {}, classes: {}, texts: 0 }) {
+function collectDOMStat(root, obj = { tags: {}, classes: {} }) {
+    console.dir(root.childNodes)
+    console.dir(root)
    
     if (root.tagName) {
-        obj.tags[root.tagName] === undefined ? obj.tags[root.tagName] = 1 : obj.tags[root.tagName]++
+        obj.tags[root.tagName] === undefined 
+            ? obj.tags[root.tagName] = 1 
+            : obj.tags[root.tagName]++;
     } 
 
     if (root.classList) {
-
         for (let i = 0; i < root.classList.length; i++) {
-            let count = 1;
-
-            if (!obj.classes[root.classList[i]]) {
-                obj.classes[root.classList[i]]= 0;
-            }  
-            obj.classes[root.classList[i]]= obj.classes[root.classList[i]] + count
-
+            obj.classes[root.classList[i]] === undefined 
+                ? obj.classes[root.classList[i]] = 1 
+                : obj.classes[root.classList[i]]++;
         }
-        
     }
 
     if (root.nodeType === 3) {
-        let count = 1;
-
-        obj.texts= count + obj.texts;
+        
+        obj.texts === undefined 
+            ? obj.texts = 1
+            : obj.texts++;
     }
 
     for (let i = 0; i < root.childNodes.length; i++) {
         
         if (root.childNodes.length && root.childNodes[i] !== undefined) {            
-            collectDOMStat(root.childNodes[i], obj)
+            collectDOMStat(root.childNodes[i], obj);
         }
     }
 
@@ -252,6 +251,40 @@ console.log(collectDOMStat(document.body))
    }
  */
 function observeChildNodes(where, fn) {
+
+    let observer = new MutationObserver(mutations => {
+        var arr = [];
+        var obj = { 
+            'type': '', 
+            'nodes': []
+        };
+
+        mutations.forEach(mutation => {            
+
+            if (mutation.addedNodes.length) {
+                mutation.addedNodes.forEach((item)=>{
+                    arr.push(item)
+                })
+                
+                obj.type = 'insert'
+            }
+
+            if (mutation.removedNodes.length) {
+                mutation.removedNodes.forEach((item)=>{
+                    arr.push(item)
+                })                
+                obj.type = 'remove'
+            }
+
+        });  
+        obj.nodes = arr;
+        fn(obj)
+    });
+    
+    var config = { childList: true, characterData: true, subtree: true };
+    
+    observer.observe(where, config);
+
 }
 
 export {
