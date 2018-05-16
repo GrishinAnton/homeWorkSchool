@@ -1,122 +1,54 @@
-/* ДЗ 2 - работа с массивами и объеектами */
+/* ДЗ 6 - Асинхронность и работа с сетью */
 
 /*
  Задание 1:
 
- Напишите аналог встроенного метода forEach для работы с массивами
- Посмотрите как работает forEach и повторите это поведение для массива, который будет передан в параметре array
+ Функция должна возвращать Promise, который должен быть разрешен через указанное количество секунду
+
+ Пример:
+   delayPromise(3) // вернет promise, который будет разрешен через 3 секунды
  */
-function forEach(array, fn) {
-    for (var i = 0; i < array.length; i++) {
-        fn(array[i], i, array);
-    }
+function delayPromise(seconds) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve()
+        }, seconds)
+    });
 }
 
 /*
  Задание 2:
 
- Напишите аналог встроенного метода map для работы с массивами
- Посмотрите как работает map и повторите это поведение для массива, который будет передан в параметре array
- */
-function map(array, fn) {
-    var arr = [];
+ 2.1: Функция должна вернуть Promise, который должен быть разрешен с массивом городов в качестве значения
 
-    for (var i = 0; i < array.length; i++) {
-        arr.push(fn(array[i], i, array));
-    }
+ Массив городов пожно получить отправив асинхронный запрос по адресу
+ https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
 
-    return arr;
-}
-
-/*
- Задание 3:
-
- Напишите аналог встроенного метода reduce для работы с массивами
- Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
- */
-function reduce(array, fn, initial) {
-
-    var result = initial || array[0];
-
-    for (var i = !initial ? 1 : 0; i < array.length; i++) {   
-
-        result = fn(result, array[i], i, array);    
-    }  
-
-    return result;
-}
-
-/*
- Задание 4:
-
- Функция должна перебрать все свойства объекта, преобразовать их имена в верхний регистр и вернуть в виде массива
+ 2.2: Элементы полученного массива должны быть отсортированы по имени города
 
  Пример:
-   upperProps({ name: 'Сергей', lastName: 'Петров' }) вернет ['NAME', 'LASTNAME']
+   loadAndSortTowns().then(towns => console.log(towns)) // должна вывести в консоль отсортированный массив городов
  */
-function upperProps(obj) {
-    var arr = [];
+function loadAndSortTowns() {
+    return new Promise(resolve => {
+        var xhr = new XMLHttpRequest()
 
-    for (var name of Object.keys(obj)) {      
-        arr.push(name.toUpperCase());      
-    } 
-
-    return arr;
+        xhr.open('GET', 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json')
+        xhr.responseType = 'json'
+        xhr.send()
+        
+        xhr.addEventListener('load', function() {
+            if (xhr.status != 200) {
+                console.log("error")
+            } else {
+                console.log("{+++")
+                console.log(xhr.response)
+            }
+        })        
+    })
 }
-
-/*
- Задание 5 *:
-
- Напишите аналог встроенного метода slice для работы с массивами
- Посмотрите как работает slice и повторите это поведение для массива, который будет передан в параметре array
- */
-function slice(array, from = 0, to = array.length) {
-    var arr = [];
-    
-    if (arguments.length <= 1) {
-        return array
-    }
-
-    if (to > array.length ) {
-        to = array.length
-    }
-
-    if (to < 0) {
-        to = array.length + to
-    }
-
-    if (from < 0) {
-        from = 0;
-    }
-
-    for (var i = from; to > i; i++) {
-        arr.push(array[i])
-    }
-
-    return arr;
-}
-
-/*
- Задание 6 *:
-
- Функция принимает объект и должна вернуть Proxy для этого объекта
- Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
- */
-function createProxy(obj) { 
-    return new Proxy(obj, {      
-        set(target, prop, value) {
-            target[prop] = value * value;
-
-            return true;
-        }
-    });
-}
-
+loadAndSortTowns()
 export {
-    forEach,
-    map,
-    reduce,
-    upperProps,
-    slice,
-    createProxy
+    delayPromise,
+    loadAndSortTowns
 };
