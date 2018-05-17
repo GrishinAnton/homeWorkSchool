@@ -1,3 +1,5 @@
+import { networkInterfaces } from "os";
+
 /*
  Страница должна предварительно загрузить список городов из
  https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
@@ -37,7 +39,7 @@ const homeworkContainer = document.querySelector('#homework-container');
  https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
  */
 function loadTowns() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         var xhr = new XMLHttpRequest()
 
         xhr.open('GET', 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json')
@@ -46,7 +48,7 @@ function loadTowns() {
         
         xhr.addEventListener('load', function() {
             if (xhr.status != 200) {
-                console.log("error")
+                reject()
             } else {
                 var cities = xhr.response
 
@@ -57,13 +59,35 @@ function loadTowns() {
                     return 0;
                 })
 
-                loadingBlock.style.display= 'none'
-                filterBlock.style.display= 'block'
-                resolve(cities)
+                loadingBlock.style.display= 'none';
+                filterBlock.style.display= 'block';
+
+                resolve(cities);
             }
-        })        
+        })
+        xhr.addEventListener('error', reject); 
+        xhr.addEventListener('abort', reject);        
     })
 }
+var arrCities = loadTowns();
+
+arrCities
+    .then(cities => {
+        filterInput.addEventListener('keyup', function() {
+
+            filterResult.innerHTML = '';
+            for (var item of cities) {
+                if (isMatching(item.name, filterInput.value) && filterInput.value !== '') {
+                    var p = document.createElement('p');
+
+                    p.innerText = item.name
+
+                    filterResult.appendChild(p)
+                }
+            }
+        });
+    })
+    .catch(e => console.log(e));
 
 /*
  Функция должна проверять встречается ли подстрока chunk в строке full
@@ -89,9 +113,14 @@ const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
 
-filterInput.addEventListener('keyup', function() {
-    console.log(filterInput.value)
-});
+// filterInput.addEventListener('keyup', function() {
+
+//     for (var item of cities) {
+//         if (isMatching(item.name, filterInput.value)) {
+//             filterResult.appendChild(item.name)
+//         }
+//     }
+// });
 
 export {
     loadTowns,
