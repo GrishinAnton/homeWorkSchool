@@ -21,10 +21,10 @@ const newDiv = document.createElement('div');
 
 newDiv.setAttribute('draggable', true);
 newDiv.style.backgroundColor = 'red';
-newDiv.style.width = '100px';
-newDiv.style.height = '100px';
-newDiv.style.top = '100px';
-newDiv.style.left = '100px';
+newDiv.style.width = (Math.random() * 100) + 'px';
+newDiv.style.height = (Math.random() * 100) + 'px';
+newDiv.style.top = (Math.random() * 100) + 'px';
+newDiv.style.left = (Math.random() * 100) + 'px';
 
 buttonElement.addEventListener('click', function() {
     homeworkContainer.appendChild(newDiv);
@@ -44,10 +44,10 @@ function createDiv() {
 
     newDiv.classList.add('draggable-div');
     newDiv.style.backgroundColor = 'red';
-    newDiv.style.width = '100px';
-    newDiv.style.height = '100px';
-    newDiv.style.top = '100px';
-    newDiv.style.left = '100px';
+    newDiv.style.width = (Math.random() * 100) + 'px';
+    newDiv.style.height = (Math.random() * 100) + 'px';
+    newDiv.style.top = (Math.random() * 100) + 'px';
+    newDiv.style.left = (Math.random() * 100) + 'px';
 
     return newDiv;
 }
