@@ -155,68 +155,36 @@ function deleteTextNodesRecursive (where) {
      texts: 3
    }
  */
+
 function collectDOMStat(root, obj = { tags: {}, classes: {} }) {
-    console.dir(root.childNodes)
-    console.dir(root)
+
+    for (let child of root.childNodes) {
    
-    if (root.tagName) {
-        obj.tags[root.tagName] === undefined 
-            ? obj.tags[root.tagName] = 1 
-            : obj.tags[root.tagName]++;
-    } 
+        if (child.tagName) {
+            obj.tags[child.tagName] === undefined 
+                ? obj.tags[child.tagName] = 1 
+                : obj.tags[child.tagName]++;
+        } 
 
-    if (root.classList) {
-        for (let i = 0; i < root.classList.length; i++) {
-            obj.classes[root.classList[i]] === undefined 
-                ? obj.classes[root.classList[i]] = 1 
-                : obj.classes[root.classList[i]]++;
+        if (child.classList) {
+            for (let i = 0; i < child.classList.length; i++) {
+                obj.classes[child.classList[i]] === undefined 
+                    ? obj.classes[child.classList[i]] = 1 
+                    : obj.classes[child.classList[i]]++;
+            }
         }
-    }
 
-    if (root.nodeType === 3) {
-        
-        obj.texts === undefined 
-            ? obj.texts = 1
-            : obj.texts++;
-    }
-
-    for (let i = 0; i < root.childNodes.length; i++) {
-        
-        if (root.childNodes.length && root.childNodes[i] !== undefined) {            
-            collectDOMStat(root.childNodes[i], obj);
+        if (child.nodeType === 3) {
+            
+            obj.texts === undefined 
+                ? obj.texts = 1
+                : obj.texts++;
         }
+        collectDOMStat(child, obj); 
     }
-
+    
     return obj;
 }
-
-console.log(collectDOMStat(document.body))
-
-// function collectDOMStat(root, statistic = { tags: {}, classes: {} }) {
-//     [...root.childNodes].forEach(elem => {       
-//         if (elem.data) {
-//             (statistic.texts !== undefined) 
-//                 ? ++statistic.texts
-//                 : statistic.texts = 1
-//         } else {
-//             (statistic.tags[elem.nodeName] !== undefined)
-//                 ? ++statistic.tags[elem.nodeName]
-//                 : statistic.tags[elem.nodeName] = 1
-      
-//             elem.classList.forEach(item => {
-//                 (statistic.classes[item] !== undefined)
-//                     ? ++statistic.classes[item]
-//                     : statistic.classes[item] = 1
-//             })
-//         }
-  
-//         if (elem.children) {
-//             collectDOMStat(elem, statistic)
-//         }
-//     })
-
-//     return statistic
-// }
 
 /*
  Задание 8 *:
