@@ -44,9 +44,86 @@ const addButton = homeworkContainer.querySelector('#add-button');
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
 filterNameInput.addEventListener('keyup', function() {
-    // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+    updateCookie()
 });
 
 addButton.addEventListener('click', () => {
-    // здесь можно обработать нажатие на кнопку "добавить cookie"
+    document.cookie = `${addNameInput.value}=${addValueInput.value}`;
+    
+    
+    updateCookie();
+
 });
+
+function isFilterCookie(full, chunk){ 
+    return full.toLowerCase().indexOf(chunk.toLowerCase()) >= 0 ? true : false;
+}
+
+
+function renderCookieList(cookie){
+    // console.log(cookie);
+    
+    if (filterNameInput.value){
+        
+        for(var i = 0; i < cookie.length; i++){
+            if (isFilterCookie(cookie[i], filterNameInput.value)) {
+                addCookie(cookie);
+                return
+            }
+        }
+
+        // cookie.forEach((item)=>{  
+            
+
+        // })
+        
+    } else {
+        addCookie(cookie); 
+    }
+       
+}
+
+function updateCookie(){
+    listTable.innerHTML = "";    
+
+    if (document.cookie) {
+        var cookieArr = document.cookie.split('; ');
+
+        cookieArr.forEach((item, index) => {
+            renderCookieList(item.split('='));
+        });
+    }
+
+}
+
+updateCookie()
+
+function addCookie(cookie) {
+    var trElem = document.createElement('tr')
+    var fragment = document.createDocumentFragment();
+    var buttonElem = document.createElement('button');
+    buttonElem.innerText = 'Удалить куку';
+
+    buttonElem.addEventListener('click', () => {
+        var cookie_date = new Date();
+        cookie_date.setTime(cookie_date.getTime() - 1);
+        document.cookie = cookie[0] += "=; expires=" + cookie_date.toGMTString();
+        updateCookie()
+    });
+
+    cookie.forEach((item, i) => {
+        var tdElem = document.createElement('td');
+        tdElem.innerText = item;
+        fragment.appendChild(tdElem);
+    });
+
+    var tdElem = document.createElement('td');
+    tdElem.appendChild(buttonElem);
+    fragment.appendChild(tdElem);
+    trElem.appendChild(fragment);
+
+    listTable.appendChild(trElem);
+}
+
+
+
