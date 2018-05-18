@@ -48,82 +48,71 @@ filterNameInput.addEventListener('keyup', function() {
 });
 
 addButton.addEventListener('click', () => {
-    document.cookie = `${addNameInput.value}=${addValueInput.value}`;
-    
-    
+    document.cookie = `${addNameInput.value}=${addValueInput.value}`;    
     updateCookie();
-
 });
 
-function isFilterCookie(full, chunk){ 
+function isFilterCookie (full, chunk) { 
     return full.toLowerCase().indexOf(chunk.toLowerCase()) >= 0 ? true : false;
 }
 
-
-function renderCookieList(cookie){
-    // console.log(cookie);
+function renderCookieList (cookie) {
     
-    if (filterNameInput.value){
-        
-        for(var i = 0; i < cookie.length; i++){
+    if (filterNameInput.value) {
+
+        for (var i = 0; i < cookie.length; i++) {
             if (isFilterCookie(cookie[i], filterNameInput.value)) {
                 addCookie(cookie);
-                return
+
+                return;
             }
         }
-
-        // cookie.forEach((item)=>{  
-            
-
-        // })
-        
     } else {
         addCookie(cookie); 
-    }
-       
+    } 
 }
 
-function updateCookie(){
-    listTable.innerHTML = "";    
+function updateCookie() {
+    listTable.innerHTML = '';    
 
     if (document.cookie) {
         var cookieArr = document.cookie.split('; ');
 
-        cookieArr.forEach((item, index) => {
+        cookieArr.forEach(item => {
             renderCookieList(item.split('='));
         });
     }
 
 }
 
-updateCookie()
+updateCookie ()
 
-function addCookie(cookie) {
+function addCookie (cookie) {
     var trElem = document.createElement('tr')
     var fragment = document.createDocumentFragment();
     var buttonElem = document.createElement('button');
+
     buttonElem.innerText = 'Удалить куку';
 
     buttonElem.addEventListener('click', () => {
-        var cookie_date = new Date();
-        cookie_date.setTime(cookie_date.getTime() - 1);
-        document.cookie = cookie[0] += "=; expires=" + cookie_date.toGMTString();
+        var cookieDate = new Date();
+
+        cookieDate.setTime(cookieDate.getTime() - 1);
+        document.cookie = cookie[0] += '=; expires=' + cookieDate.toGMTString();
         updateCookie()
     });
 
-    cookie.forEach((item, i) => {
+    cookie.forEach(item => {
         var tdElem = document.createElement('td');
+
         tdElem.innerText = item;
         fragment.appendChild(tdElem);
     });
 
     var tdElem = document.createElement('td');
+
     tdElem.appendChild(buttonElem);
     fragment.appendChild(tdElem);
     trElem.appendChild(fragment);
-
     listTable.appendChild(trElem);
 }
-
-
-
