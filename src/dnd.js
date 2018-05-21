@@ -20,15 +20,15 @@ const buttonElement = document.querySelector('#addDiv');
 const newDiv = document.createElement('div');
 
 newDiv.setAttribute('draggable', true);
-newDiv.style.backgroundColor = 'red';
+newDiv.style.backgroundColor = `rgb(${(Math.random() * 255)},${(Math.random() * 255)},${(Math.random() * 255)})`;
 newDiv.style.width = (Math.random() * 100) + 'px';
 newDiv.style.height = (Math.random() * 100) + 'px';
 newDiv.style.top = (Math.random() * 100) + 'px';
 newDiv.style.left = (Math.random() * 100) + 'px';
 
-buttonElement.addEventListener('click', function() {
-    homeworkContainer.appendChild(newDiv);
-});
+// buttonElement.addEventListener('click', function() {
+//     homeworkContainer.appendChild(newDiv);
+// });
 
 /*
  Функция должна создавать и возвращать новый div с классом draggable-div и случайными размерами/цветом/позицией
@@ -43,7 +43,7 @@ function createDiv() {
     const newDiv = document.createElement('div');
 
     newDiv.classList.add('draggable-div');
-    newDiv.style.backgroundColor = 'red';
+    newDiv.style.backgroundColor = `rgb(${(Math.random() * 255)},${(Math.random() * 255)},${(Math.random() * 255)})`;
     newDiv.style.width = (Math.random() * 100) + 'px';
     newDiv.style.height = (Math.random() * 100) + 'px';
     newDiv.style.top = (Math.random() * 100) + 'px';
