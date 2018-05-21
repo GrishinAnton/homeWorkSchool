@@ -87,7 +87,7 @@ arrCities
             }
         });
     })
-    .catch(e => console.log(e));
+    .catch(e => e);
 
 /*
  Функция должна проверять встречается ли подстрока chunk в строке full

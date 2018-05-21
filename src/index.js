@@ -10,7 +10,7 @@
  */
 function delayPromise(seconds) {
     return new Promise((resolve) => {
-        setTimeout(resolve, seconds)
+        setTimeout(resolve, seconds * 1000)
     });
 }
 
@@ -55,7 +55,7 @@ function loadAndSortTowns() {
         xhr.addEventListener('abort', reject);        
     })
 }
-loadAndSortTowns().then(towns => console.log(towns))
+
 export {
     delayPromise,
     loadAndSortTowns
