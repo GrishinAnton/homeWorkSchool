@@ -26,9 +26,9 @@ newDiv.style.height = (Math.random() * 100) + 'px';
 newDiv.style.top = (Math.random() * 100) + 'px';
 newDiv.style.left = (Math.random() * 100) + 'px';
 
-buttonElement.addEventListener('click', function() {
-    homeworkContainer.appendChild(newDiv);
-});
+// buttonElement.addEventListener('click', function() {
+//     homeworkContainer.appendChild(newDiv);
+// });
 
 /*
  Функция должна создавать и возвращать новый div с классом draggable-div и случайными размерами/цветом/позицией
@@ -61,7 +61,46 @@ function createDiv() {
    addListeners(newDiv);
  */
 function addListeners(target) {
-    target.setAttribute('draggable', true);
+   target.onmousedown = function (e) {
+
+        var coords = getCoords(target);
+        var shiftX = e.pageX - coords.left;
+        var shiftY = e.pageY - coords.top;
+
+        target.style.position = 'absolute';
+        document.body.appendChild(target);
+        moveAt(e);
+
+        target.style.zIndex = 1000;
+
+        function moveAt(e) {
+            target.style.left = e.pageX - shiftX + 'px';
+            target.style.top = e.pageY - shiftY + 'px';
+        }
+
+        document.onmousemove = function (e) {
+            moveAt(e);
+        };
+
+        target.onmouseup = function () {
+            document.onmousemove = null;
+            target.onmouseup = null;
+        };
+
+    }
+
+    target.ondragstart = function () {
+        return false;
+    };
+
+    function getCoords(elem) {   
+            var box = elem.getBoundingClientRect();
+            
+        return {
+            top: box.top + pageYOffset,
+            left: box.left + pageXOffset
+        };
+    }
 }
 
 let addDivButton = homeworkContainer.querySelector('#addDiv');
