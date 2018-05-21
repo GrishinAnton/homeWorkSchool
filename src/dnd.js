@@ -61,7 +61,7 @@ function createDiv() {
    addListeners(newDiv);
  */
 function addListeners(target) {
-   target.onmousedown = function (e) {
+    target.onmousedown = function (e) {
 
         var coords = getCoords(target);
         var shiftX = e.pageX - coords.left;
@@ -94,7 +94,7 @@ function addListeners(target) {
     };
 
     function getCoords(elem) {   
-            var box = elem.getBoundingClientRect();
+        var box = elem.getBoundingClientRect();
             
         return {
             top: box.top + pageYOffset,
