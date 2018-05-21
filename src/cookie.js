@@ -85,12 +85,12 @@ function updateCookie() {
 
 }
 
-updateCookie ()
+updateCookie ();
 
 function addCookie (cookie) {
     var trElem = document.createElement('tr')
-    var fragment = document.createDocumentFragment();
     var buttonElem = document.createElement('button');
+    var fragment = document.createDocumentFragment();
 
     buttonElem.innerText = 'Удалить куку';
 
